@@ -7,8 +7,11 @@
 # 2. Install dependencies:
 #       pip install -r requirements.txt
 #
-# 3. Start the server:
-#       python main.py
+# 3. Start the server (local):
+#       uvicorn main:app --reload
+#
+#    Start the server (Render / production):
+#       gunicorn -k uvicorn.workers.UvicornWorker main:app
 #
 # 4. Open in browser:
 #       http://localhost:8000
