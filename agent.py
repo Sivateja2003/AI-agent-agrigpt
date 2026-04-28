@@ -1,4 +1,4 @@
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 from langchain_core.tools import tool
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from tools import run_pest_tool, run_scheme_tool
@@ -15,7 +15,7 @@ If the question is NOT related to agriculture, do NOT call any tool. Politely ex
 
 
 def run_agent(message: str, api_key: str) -> dict:
-    llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-lite", google_api_key=api_key)
+    llm = ChatGroq(model="llama-3.3-70b-versatile", api_key=api_key)
 
     @tool
     def simulate_pests(query: str) -> str:

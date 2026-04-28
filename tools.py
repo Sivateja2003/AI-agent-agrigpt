@@ -1,5 +1,5 @@
 import json
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage
 
 PESTS_KNOWLEDGE_BASE = """
@@ -152,8 +152,8 @@ _SCHEME_SYSTEM = (
 )
 
 
-def _make_llm(api_key: str) -> ChatGoogleGenerativeAI:
-    return ChatGoogleGenerativeAI(model="gemini-2.0-flash-lite", google_api_key=api_key)
+def _make_llm(api_key: str) -> ChatGroq:
+    return ChatGroq(model="llama-3.3-70b-versatile", api_key=api_key)
 
 
 def run_pest_tool(api_key: str, query: str) -> str:

@@ -1,7 +1,7 @@
 # HOW TO RUN
 # ----------
-# 1. Add your Gemini API key to the .env file (used by /schemes and /pests endpoints):
-#       GEMINI_API_KEY=AIza...
+# 1. Add your Groq API key to the .env file (used by /schemes and /pests endpoints):
+#       GROQ_API_KEY=gsk_...
 #
 # 2. Install dependencies:
 #       pip install -r requirements.txt
@@ -31,7 +31,7 @@ from tools import query_pest_structured, query_scheme_structured
 
 load_dotenv()
 
-GEMINI_API_KEY    = os.getenv("GEMINI_API_KEY", "")
+GROQ_API_KEY      = os.getenv("GROQ_API_KEY", "")
 LANGCHAIN_API_KEY = os.getenv("LANGCHAIN_API_KEY", "")
 
 _langsmith_active = bool(LANGCHAIN_API_KEY and not LANGCHAIN_API_KEY.startswith("lsv2_your"))
@@ -45,17 +45,17 @@ else:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    if not GEMINI_API_KEY:
-        print("WARNING: GEMINI_API_KEY not set in .env (required for /schemes and /pests endpoints)")
+    if not GROQ_API_KEY:
+        print("WARNING: GROQ_API_KEY not set in .env (required for /schemes and /pests endpoints)")
     else:
         tracing = "LangSmith tracing enabled" if _langsmith_active else "LangSmith tracing disabled"
-        print(f"AgriGPT AI Agent started with Gemini. {tracing}.")
+        print(f"AgriGPT AI Agent started with Groq. {tracing}.")
     yield
 
 
 app = FastAPI(
     title="AgriGPT — Agricultural AI Agent",
-    description="AI agent for farmers powered by Google Gemini. Routes pest and government scheme queries to specialized tools.",
+    description="AI agent for farmers powered by Groq. Routes pest and government scheme queries to specialized tools.",
     version="2.0.0",
     lifespan=lifespan,
 )
@@ -112,7 +112,7 @@ async def health():
     return {
         "status": "healthy",
         "service": "AgriGPT Agricultural AI Agent",
-        "gemini_configured": bool(GEMINI_API_KEY),
+        "gemini_configured": bool(GROQ_API_KEY),
     }
 
 
@@ -148,11 +148,11 @@ async def pests(request: PestRequest):
     """
     if not request.query.strip():
         raise HTTPException(status_code=400, detail="query cannot be empty.")
-    if not GEMINI_API_KEY:
-        raise HTTPException(status_code=500, detail="GEMINI_API_KEY not set in .env file.")
+    if not GROQ_API_KEY:
+        raise HTTPException(status_code=500, detail="GROQ_API_KEY not set in .env file.")
 
     try:
-        result = query_pest_structured(api_key=GEMINI_API_KEY, query=request.query)
+        result = query_pest_structured(api_key=GROQ_API_KEY, query=request.query)
         return PestResponse(pest=result.get("pest", "Unknown"), details=result.get("details", ""))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -168,11 +168,11 @@ async def schemes(request: SchemeRequest):
     """
     if not request.query.strip():
         raise HTTPException(status_code=400, detail="query cannot be empty.")
-    if not GEMINI_API_KEY:
-        raise HTTPException(status_code=500, detail="GEMINI_API_KEY not set in .env file.")
+    if not GROQ_API_KEY:
+        raise HTTPException(status_code=500, detail="GROQ_API_KEY not set in .env file.")
 
     try:
-        result = query_scheme_structured(api_key=GEMINI_API_KEY, query=request.query)
+        result = query_scheme_structured(api_key=GROQ_API_KEY, query=request.query)
         return SchemeResponse(scheme=result.get("scheme", "Unknown"), details=result.get("details", ""))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
