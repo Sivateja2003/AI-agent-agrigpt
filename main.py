@@ -11,7 +11,7 @@
 #
 #    Deploy on Render:
 #       Build Command  : pip install -r requirements.txt
-#       Start Command  : gunicorn -k uvicorn.workers.UvicornWorker main:app
+#       Start Command  : gunicorn -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT main:app
 #
 # 4. Open in browser:
 #       http://localhost:8000
