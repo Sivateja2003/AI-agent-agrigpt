@@ -153,7 +153,7 @@ _SCHEME_SYSTEM = (
 
 
 def _make_llm(api_key: str) -> ChatGroq:
-    return ChatGroq(model="llama-3.3-70b-versatile", api_key=api_key)
+    return ChatGroq(model="llama-3.1-8b-instant", api_key=api_key)
 
 
 def run_pest_tool(api_key: str, query: str) -> str:

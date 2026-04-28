@@ -15,7 +15,7 @@ If the question is NOT related to agriculture, do NOT call any tool. Politely ex
 
 
 def run_agent(message: str, api_key: str) -> dict:
-    llm = ChatGroq(model="llama-3.3-70b-versatile", api_key=api_key)
+    llm = ChatGroq(model="llama-3.1-8b-instant", api_key=api_key)
 
     @tool
     def simulate_pests(query: str) -> str:
